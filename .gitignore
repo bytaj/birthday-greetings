@@ -1,7 +1,7 @@
 .idea
 .phpunit.result.cache
-/bin
+bin
 !/bin/main.php
-/vendor
-/composer.lock
+vendor/
+composer.lock
 .phpunit.cache

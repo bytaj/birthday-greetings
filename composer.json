@@ -1,8 +1,7 @@
 {
-    "name": "theunic/birthay-greetings-kata-php",
+    "name": "bytaj/birthay-greetings-kata-php",
     "description": "A simple refactoring exercise that is meant to teach something about dependency inversion and dependency injection",
     "version": "2.0.0",
-    "keywords": ["kata", "practice", "coding dojo", "dojo", "birthday", "birthday-kata"],
     "require": {
         "ext-json": "*",
         "php": ">=8.2",
@@ -15,12 +14,6 @@
         "symfony/process": "^6.2"
     },
     "license": "MIT",
-    "authors": [
-        {
-            "name": "theUniC",
-            "email": "theunic@gmail.com"
-        }
-    ],
     "minimum-stability": "stable",
     "config": {
         "bin-dir": "bin/",

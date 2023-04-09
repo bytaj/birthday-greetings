@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+  app:
+    container_name: birthday-greetings-kata
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    depends_on:
+      - mailhog
+
   mailhog:
     image: mailhog/mailhog
     ports:
