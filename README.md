@@ -25,11 +25,12 @@ To check that all the tests are passing just execute PHPUnit
 
 ```bash
 docker-compose up -d
+cp phpunit.xml.dist phpunit.xml
 make init
 make test
 ```
 
-For the rest runnings of the tests you can just execute
+For the rest running of the tests you can just execute
 
 ```bash
 make test
