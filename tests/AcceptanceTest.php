@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\BirthdayGreetingsKata;
 
 use BirthdayGreetingsKata\BirthdayService;
+use BirthdayGreetingsKata\CsvEmployeeRepository;
 use BirthdayGreetingsKata\XDate;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Attributes\After;
@@ -23,7 +24,8 @@ final class AcceptanceTest extends TestCase
     #[Before]
     protected function startMailhog(): void
     {
-        $this->service = new BirthdayService();
+        $employeeRepository = new CsvEmployeeRepository(__DIR__ . '/resources/employee_data.txt');
+        $this->service = new BirthdayService($employeeRepository);
     }
 
     #[After]
@@ -38,7 +40,6 @@ final class AcceptanceTest extends TestCase
     public function willSendGreetings_whenItsSomebodysBirthday(): void
     {
         $this->service->sendGreetings(
-            __DIR__ . '/resources/employee_data.txt',
             new XDate('2008/10/08'),
             static::SMTP_HOST,
             static::SMTP_PORT
@@ -58,7 +59,6 @@ final class AcceptanceTest extends TestCase
     public function willNotSendEmailsWhenNobodysBirthday(): void
     {
         $this->service->sendGreetings(
-            __DIR__ . '/resources/employee_data.txt',
             new XDate('2008/01/01'),
             static::SMTP_HOST,
             static::SMTP_PORT

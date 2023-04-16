@@ -10,10 +10,13 @@ use Symfony\Component\Mime\Email;
 
 final readonly class BirthdayService
 {
-    public function sendGreetings(string $fileName, XDate $xDate, string $smtpHost, int $smtpPort): void
+    public function __construct(private EmployeeRepository $employeeRepository)
     {
-        $employeeRepository = new CsvEmployeeRepository($fileName);
-        $employees = $employeeRepository->byBirthDay($xDate);
+    }
+
+    public function sendGreetings(XDate $xDate, string $smtpHost, int $smtpPort): void
+    {
+        $employees = $this->employeeRepository->byBirthDay($xDate);
 
         foreach ($employees as $employee) {
             $recipient = $employee->getEmail();

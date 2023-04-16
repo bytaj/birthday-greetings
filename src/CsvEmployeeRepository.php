@@ -2,7 +2,7 @@
 
 namespace BirthdayGreetingsKata;
 
-final readonly class CsvEmployeeRepository
+final readonly class CsvEmployeeRepository implements EmployeeRepository
 {
     public function __construct(private string $fileName)
     {
