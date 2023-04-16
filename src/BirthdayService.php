@@ -8,7 +8,7 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 
-final class BirthdayService
+final readonly class BirthdayService
 {
     public function sendGreetings(string $fileName, XDate $xDate, string $smtpHost, int $smtpPort): void
     {
