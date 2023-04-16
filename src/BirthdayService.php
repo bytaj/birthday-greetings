@@ -19,14 +19,12 @@ final readonly class BirthdayService
         $employees = $this->employeeRepository->byBirthDay($xDate);
 
         foreach ($employees as $employee) {
-            $recipient = $employee->getEmail();
-            $body = sprintf('Happy Birthday, dear %s!', $employee->getFirstName());
-            $subject = 'Happy Birthday!';
-            $this->sendMessage($smtpHost, $smtpPort, 'sender@here.com', $subject, $body, $recipient);
+            $birthdayGreet = BirthdayGreet::fromEmployee($employee);
+            $this->sendMessage($smtpHost, $smtpPort, $birthdayGreet);
         }
     }
 
-    private function sendMessage(string $smtpHost, int $smtpPort, string $sender, string $subject, string $body, string $recipient): void
+    private function sendMessage(string $smtpHost, int $smtpPort, BirthdayGreet $birthdayGreet): void
     {
         // Create a mailer
         $mailer = new Mailer(
@@ -35,10 +33,10 @@ final readonly class BirthdayService
 
         // Construct the message
         $msg = (new Email())
-            ->subject($subject)
-            ->from($sender)
-            ->to($recipient)
-            ->text($body);
+            ->subject($birthdayGreet->title())
+            ->from($birthdayGreet->from())
+            ->to($birthdayGreet->to())
+            ->text($birthdayGreet->message());
 
         // Send the message
         $mailer->send($msg);
