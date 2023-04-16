@@ -12,18 +12,14 @@ final class BirthdayService
 {
     public function sendGreetings(string $fileName, XDate $xDate, string $smtpHost, int $smtpPort): void
     {
-        $fileHandler = fopen($fileName, 'rb');
-        fgetcsv($fileHandler);
+        $employeeRepository = new EmployeeRepository($fileName);
+        $employees = $employeeRepository->byBirthDay($xDate);
 
-        while ($employeeData = fgetcsv($fileHandler, null, ',')) {
-            $employeeData = array_map('trim', $employeeData);
-            $employee = new Employee($employeeData[1], $employeeData[0], $employeeData[2], $employeeData[3]);
-            if ($employee->isBirthday($xDate)) {
-                $recipient = $employee->getEmail();
-                $body = sprintf('Happy Birthday, dear %s!', $employee->getFirstName());
-                $subject = 'Happy Birthday!';
-                $this->sendMessage($smtpHost, $smtpPort, 'sender@here.com', $subject, $body, $recipient);
-            }
+        foreach ($employees as $employee) {
+            $recipient = $employee->getEmail();
+            $body = sprintf('Happy Birthday, dear %s!', $employee->getFirstName());
+            $subject = 'Happy Birthday!';
+            $this->sendMessage($smtpHost, $smtpPort, 'sender@here.com', $subject, $body, $recipient);
         }
     }
 
