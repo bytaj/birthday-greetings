@@ -12,7 +12,7 @@ final readonly class BirthdayService
 {
     public function sendGreetings(string $fileName, XDate $xDate, string $smtpHost, int $smtpPort): void
     {
-        $employeeRepository = new EmployeeRepository($fileName);
+        $employeeRepository = new CsvEmployeeRepository($fileName);
         $employees = $employeeRepository->byBirthDay($xDate);
 
         foreach ($employees as $employee) {
