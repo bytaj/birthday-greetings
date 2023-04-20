@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: birthday-greetings-kata
+spec:
+  selector:
+    matchLabels:
+      app: birthday-greetings-kata
+  template:
+    metadata:
+      labels:
+        app: birthday-greetings-kata
+    spec:
+      containers:
+      - name: birthday-greetings-kata
+        image: localhost:32000/birthday-greetings-kata
+        volumeMounts:
+        - mountPath: /app
+          name: app
+      volumes:
+      - name: app
+        hostPath:
+          path: {{ .Values.path }}
+          type: Directory

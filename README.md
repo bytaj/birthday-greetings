@@ -1,4 +1,4 @@
-# Birthday Greetings kata in PHP fully dockerized
+# Birthday Greetings kata in PHP fully dockerized and kubernetes ready
 
 This is a simple refactoring exercise that is meant to teach something about dependency inversion and dependency injection.
 
@@ -12,7 +12,10 @@ The video playlist of the original conference: https://www.youtube.com/watch?v=h
 
 ### Requirements
 
-In order to use this Kata boilerplate you need to have installed Docker and Docker Compose. Also you need to have installed `make` and `git`.
+In order to use this Kata boilerplate you need to have installed Docker. Also you need to have installed `make` and `git`.
+
+The kata is ready to run in Docker compose and Kubernetes. You don't need to have both, just one of them. You'll need to run a copy the Makefile you need depending of witch one you have installed.
+
 
 ### Run it
 
@@ -21,15 +24,22 @@ git clone git@github.com:bytaj/birthday-greetings.git
 cd birthday-greetings-kata
 ```
 
-To check that all the tests are passing just execute PHPUnit
+#### Docker compose
 
 ```bash
+cp Makefile.docker-compose.dist Makefile
 docker-compose up -d
 make init
-make test
 ```
 
-For the rest running of the tests you can just execute
+#### Kubernetes
+
+```bash
+cp Makefile.kubernetes.dist Makefile
+make init
+```
+
+To check that all the tests are passing just execute PHPUnit
 
 ```bash
 make test
