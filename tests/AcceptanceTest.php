@@ -30,8 +30,6 @@ final class AcceptanceTest extends TestCase
     protected function stopMailhog(): void
     {
         (new Client())->delete('http://mailhog:8025/api/v1/messages');
-        Process::fromShellCommandline('docker compose stop')->run();
-        Process::fromShellCommandline('docker compose rm -f')->run();
     }
 
     #[Test]
