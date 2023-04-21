@@ -1,0 +1,5 @@
+init:
+	kubectl exec -it `kubectl get po -l app=birthday-greetings-kata -o name` -- composer install
+
+test:
+	kubectl exec -it `kubectl get po -l app=birthday-greetings-kata -o name` -- /app/bin/phpunit
