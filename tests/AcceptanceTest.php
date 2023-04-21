@@ -6,6 +6,7 @@ namespace Tests\BirthdayGreetingsKata;
 
 use BirthdayGreetingsKata\BirthdayService;
 use BirthdayGreetingsKata\CsvEmployeeRepository;
+use BirthdayGreetingsKata\MailMessageSenderService;
 use BirthdayGreetingsKata\XDate;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Attributes\After;
@@ -16,8 +17,6 @@ use Symfony\Component\Process\Process;
 
 final class AcceptanceTest extends TestCase
 {
-    private const SMTP_HOST = 'mailhog';
-    private const SMTP_PORT = 1025;
 
     private BirthdayService $service;
 
@@ -25,7 +24,8 @@ final class AcceptanceTest extends TestCase
     protected function startMailhog(): void
     {
         $employeeRepository = new CsvEmployeeRepository(__DIR__ . '/resources/employee_data.txt');
-        $this->service = new BirthdayService($employeeRepository);
+        $messageSenderService = new MailMessageSenderService();
+        $this->service = new BirthdayService($employeeRepository, $messageSenderService);
     }
 
     #[After]
@@ -38,9 +38,7 @@ final class AcceptanceTest extends TestCase
     public function willSendGreetings_whenItsSomebodysBirthday(): void
     {
         $this->service->sendGreetings(
-            new XDate('2008/10/08'),
-            static::SMTP_HOST,
-            static::SMTP_PORT
+            new XDate('2008/10/08')
         );
 
         $messages = $this->messagesSent();
@@ -57,9 +55,7 @@ final class AcceptanceTest extends TestCase
     public function willNotSendEmailsWhenNobodysBirthday(): void
     {
         $this->service->sendGreetings(
-            new XDate('2008/01/01'),
-            static::SMTP_HOST,
-            static::SMTP_PORT
+            new XDate('2008/01/01')
         );
 
         $this->assertCount(0, $this->messagesSent(), 'what? messages?');
