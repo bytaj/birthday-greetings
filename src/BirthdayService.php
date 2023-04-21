@@ -8,9 +8,9 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 
-final readonly class BirthdayService
+class BirthdayService
 {
-    public function __construct(private EmployeeRepository $employeeRepository)
+    public function __construct(private readonly EmployeeRepository $employeeRepository)
     {
     }
 
@@ -24,7 +24,7 @@ final readonly class BirthdayService
         }
     }
 
-    private function sendMessage(string $smtpHost, int $smtpPort, BirthdayGreet $birthdayGreet): void
+    protected function sendMessage(string $smtpHost, int $smtpPort, BirthdayGreet $birthdayGreet): void
     {
         // Create a mailer
         $mailer = new Mailer(

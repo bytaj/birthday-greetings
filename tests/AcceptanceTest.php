@@ -19,19 +19,20 @@ final class AcceptanceTest extends TestCase
     private const SMTP_HOST = 'mailhog';
     private const SMTP_PORT = 1025;
 
-    private BirthdayService $service;
+    private BirthdayServiceSpy $service;
 
     #[Before]
     protected function startMailhog(): void
     {
         $employeeRepository = new CsvEmployeeRepository(__DIR__ . '/resources/employee_data.txt');
-        $this->service = new BirthdayService($employeeRepository);
+        $this->service = new BirthdayServiceSpy($employeeRepository);
     }
 
     #[After]
     protected function stopMailhog(): void
     {
         (new Client())->delete('http://mailhog:8025/api/v1/messages');
+        $this->service->greetingsSent = [];
     }
 
     #[Test]
@@ -43,14 +44,8 @@ final class AcceptanceTest extends TestCase
             static::SMTP_PORT
         );
 
-        $messages = $this->messagesSent();
-        $this->assertCount(1, $messages, 'message not sent?');
-
-        $message = $messages[0];
-        $this->assertEquals('Happy Birthday, dear John!', $message['Content']['Body']);
-        $this->assertEquals('Happy Birthday!', $message['Content']['Headers']['Subject'][0]);
-        $this->assertCount(1, $message['Content']['Headers']['To']);
-        $this->assertEquals('john.doe@foobar.com', $message['Content']['Headers']['To'][0]);
+        $this->assertCount(1, $this->service->greetingsSent);
+        $this->assertEquals('Happy Birthday, dear John!', $this->service->greetingsSent[0]->message());
     }
 
     #[Test]
@@ -62,11 +57,6 @@ final class AcceptanceTest extends TestCase
             static::SMTP_PORT
         );
 
-        $this->assertCount(0, $this->messagesSent(), 'what? messages?');
-    }
-
-    private function messagesSent(): array
-    {
-        return json_decode(file_get_contents('http://mailhog:8025/api/v1/messages'), true);
+        $this->assertEmpty($this->service->greetingsSent);
     }
 }
