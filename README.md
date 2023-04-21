@@ -34,8 +34,11 @@ make init
 
 #### Kubernetes
 
+That should be executed in the root of the project.
+
 ```bash
 cp Makefile.kubernetes.dist Makefile
+./kubernetes/deploy.sh
 make init
 ```
 
@@ -43,4 +46,13 @@ To check that all the tests are passing just execute PHPUnit
 
 ```bash
 make test
+```
+
+
+### When you finish
+
+For Kubernetes, you can delete the deployment with:
+
+```bash
+helm uninstall birthday-greetings-kata
 ```
