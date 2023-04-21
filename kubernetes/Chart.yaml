@@ -1,0 +1,5 @@
+apiVersion: v2
+name: birthday-greetings-kata-php
+appVersion: 1.0
+version: 1.0.0
+description: Birthday Greetings kata in PHP Kubernetes ready
